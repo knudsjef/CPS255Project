@@ -111,7 +111,8 @@ public class MySorts {
 		String temp;
 		for (int i = 1; i < al.size(); i++) {
 			for(int j = i ; j > 0 ; j--){
-				if(al.get(j).compareToIgnoreCase( al.get(j-1) ) < 0){
+				if(al.get(j).compareToIgnoreCase( al.get(j-1) ) < 0)
+				{
 					temp = al.get(j);
 					al.set(j, al.get(j-1));
 					al.set(j-1, temp);
