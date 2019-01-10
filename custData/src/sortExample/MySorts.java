@@ -31,12 +31,16 @@ public class MySorts {
 
 	public static boolean bubbleSortList(List<String> al)
 	{
+		//iterate through the whole list backwards
 		for(int i = al.size() - 1; i > 0; i--)
 		{
+			//loop from index 0 to i - 1
 			for(int j = 0; j < i; j++)
 			{
+				//if the index at j is greater than the index at j + 1
 				if(al.get(j).compareToIgnoreCase(al.get(j + 1)) > 0)
 				{
+					//switch the two numbers
 					String toSwitch = al.get(j+1);
 					al.set(j+1, al.get(j));
 					al.set(j, toSwitch);
