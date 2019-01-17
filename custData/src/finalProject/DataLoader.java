@@ -5,6 +5,10 @@ package finalProject;
 
 import java.io.*;
 import java.util.*;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 /**
  * @author AB, 2018
  *
@@ -14,15 +18,20 @@ import java.util.*;
  */
 public class DataLoader {
 	/*************************  public constants  *************************************************/
-	final int CUST_ID=0;
-	final int LNAME=1;     
-	final int FNAME=2;      
-	final int ADDRESS=3;
-	final int CITY=4;
-	final int STATE=5;
-	final int ZIP=6;
-	final int EMAIL_CONTACT=7;
-	final int DECEASED=8;
+	final int CUST_ID = 0;
+    final int LNAME = 1;
+    final int FNAME = 2;
+    final int ADDRESS = 3;
+    final int CITY = 4;
+    final int STATE = 5;
+    final int ZIP = 6;
+    final int BIRTHDATE = 7;
+    final int PHONE = 8;
+    final int EMAIL = 9;
+    final int MAIL_CONTENT = 10;
+    final int EMAIL_CONTACT = 11;
+    final int DECEASED = 12;
+    DateTimeFormatter TimeFormat = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
 
 	/**************************  public variables  ************************************************/
 	public List<CustData> fileData;
@@ -81,6 +90,7 @@ public class DataLoader {
 	{
 		String[] dataLineArray; 
 		String dataLine;
+		String birthDate;
 		int recNum = 0;
 		while (fileIn.hasNextLine())
 		{
@@ -102,6 +112,9 @@ public class DataLoader {
 				cdl.city = (dataLineArray[CITY].isEmpty()) ? "" : dataLineArray[CITY].trim();
 				cdl.state = (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim().toUpperCase();
 				cdl.zip = (dataLineArray[ZIP].isEmpty()) ? "" : dataLineArray[ZIP].trim();
+				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? new DateTime().toString(TimeFormat) : dataLineArray[BIRTHDATE].trim();
+				cdl.birthDate = DateTime.parse(birthDate, TimeFormat);
+				cdl.age = calculateAge(cdl.birthDate);
 				cdl.emailContact = dataLineArray[EMAIL_CONTACT].equals("1") ? true : false;
 				cdl.deceased = dataLineArray[DECEASED].equals("1") ? true : false;
 				//We're ignoring comments
@@ -110,7 +123,7 @@ public class DataLoader {
 				if (isUniqueState(cdl.state) && cdl.state.length()==2)
 					stateList.add( (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim() );
 				//Collections.sort(stateList);
-				updateStatePopulation(cdl.state);
+				updateStatePopulation(cdl.state, cdl.age);
 			}  // end try 
 			catch (Exception e)
 			{
@@ -150,16 +163,17 @@ public class DataLoader {
 	}
 
 	/****************************************************************
-	 * This method updates the input state's population.
-	 * It first checks with stateInfoList to see if the state
-	 * already exists. If it exists, then it updates existing
-	 * state's population. If not, it creates a new state object
-	 * and increase the population.
+	 * This method updates the input state's population, both total
+	 * and specified. It first checks with stateInfoList to see 
+	 * if the state already exists. If it exists, then it updates 
+	 * existing state's population. If not, it creates a new state 
+	 * object and increase the population.
 	 * 
 	 * @param State input state
+	 * @param age person's age
 	 * @author Kaiming
 	 */
-	private void updateStatePopulation(String State)
+	private void updateStatePopulation(String State, int age)
 	{			
 		boolean unique=true;
 		int stateIndex=0;
@@ -176,13 +190,76 @@ public class DataLoader {
 		if (unique) {
 			StateInfo state = new StateInfo(State);
 			state.updatePop();
+			updateStateSpecificPop(state, age); //update state's age group population
 			stateInfoList.add(state);
 		}
 		// update existing state's population
 		else {
 			stateInfoList.get(stateIndex).updatePop();
+			updateStateSpecificPop(stateInfoList.get(stateIndex), age); //update state's age group population
 		}
 	}
+	
+	/***************************************************************
+	 * This method updates number of people of a state's age group
+	 * 
+	 * @param state currenct state
+	 * @param age the person's age
+	 */
+	private void updateStateSpecificPop(StateInfo state, int age)
+	{
+		if (age >= 18 && age <=35) // between 18 and 35
+			state.PopInAgeInterval1 += 1;
+		else if (age >= 36 && age <= 60) // between 36 and 60
+			state.PopInAgeInterval2 += 1;
+		else if (age >= 61) // above 61(including 61)
+			state.PopInAgeInterval3 += 1;
+	}
+	
+	private int calculateAge(DateTime birthDay)
+    {
+        int age = 0;
+
+        /****** it will be much easier to calculate the age with Date rather
+         than DateTime so that i transfer the parameter to Date tyoe ******/
+        Date date = birthDay.toDate();
+
+        /****** get the current date ******/
+        Calendar cal = Calendar.getInstance();
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+
+        /****** set the calendar date to a given date then get date info ******/
+        cal.setTime(date);
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+        /****** calculate the age ******/
+        age = yearNow - yearBirth;
+
+        if (monthNow <= monthBirth)
+        {
+            /****** current month is same as the birth month but current day is less the birth day
+             which means there are still several days before the birthday******/
+            if (monthNow == monthBirth)
+            {
+                if (dayOfMonthNow < dayOfMonthBirth)
+                {
+                    age--;
+                }
+            }
+
+            /******* current month is less than birth month ******/
+            else
+            {
+                age--;
+            }
+        }
+        return age;
+    }
+
 	
 	public void displayCustAddr()
 	{
