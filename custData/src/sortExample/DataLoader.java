@@ -14,16 +14,31 @@ import java.util.*;
  */
 public class DataLoader {
 	/*************************  public constants  *************************************************/
-	final int CUST_ID=0;
-	final int LNAME=1;     
-	final int FNAME=2;      
-	final int ADDRESS=3;
-	final int CITY=4;
-	final int STATE=5;
-	final int ZIP=6;
-	final int EMAIL_CONTACT=7;
-	final int DECEASED=8;
+// 	final int CUST_ID=0;
+// 	final int LNAME=1;     
+// 	final int FNAME=2;      
+// 	final int ADDRESS=3;
+// 	final int CITY=4;
+// 	final int STATE=5;
+// 	final int ZIP=6;
+// 	final int EMAIL_CONTACT=7;
+// 	final int DECEASED=8;
 
+
+	final int CUST_ID = 0;
+    final int LNAME = 1;
+    final int FNAME = 2;
+    final int ADDRESS = 3;
+    final int CITY = 4;
+    final int STATE = 5;
+    final int ZIP = 6;
+    final int birthDate = 7;
+    final int phone = 8;
+    final int email = 9;
+    final int mail_Content = 10;
+    final int EMAIL_CONTACT = 11;
+    final int DECEASED = 12;
+	
 	/**************************  public variables  ************************************************/
 	public List<CustData> fileData;
 	public List<String> stateList;
