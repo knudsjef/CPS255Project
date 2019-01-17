@@ -26,5 +26,6 @@ public class CustData
 	public Boolean emailContact;
 	public Boolean deceased;
 	public String comments;
+	public int age;
 	
 } // end class CustData
