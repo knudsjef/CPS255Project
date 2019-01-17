@@ -175,6 +175,50 @@ public class DataLoader {
 		}
 	}
 
+	 public static int calculateAge(DateTime birthDay)
+    {
+        int age = 0;
+
+        /****** it will be much easier to calculate the age with Date rather
+         than DateTime so that i transfer the parameter to Date tyoe ******/
+        Date date = birthDay.toDate();
+
+        /****** get the current date ******/
+        Calendar cal = Calendar.getInstance();
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+
+        /****** set the calendar date to a given date then get date info ******/
+        cal.setTime(date);
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+        /****** calculate the age ******/
+        age = yearNow - yearBirth;
+
+        if (monthNow <= monthBirth)
+        {
+            /****** current month is same as the birth month but current day is less the birth day
+             which means there are still several days before the birthday******/
+            if (monthNow == monthBirth)
+            {
+                if (dayOfMonthNow < dayOfMonthBirth)
+                {
+                    age--;
+                }
+            }
+
+            /******* current month is less than birth month ******/
+            else
+            {
+                age--;
+            }
+        }
+        return age;
+    }
+	
 	public static void main(String[] args)
 	{
 		DataLoader dl = new DataLoader();
