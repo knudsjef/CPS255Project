@@ -12,6 +12,9 @@ public class StateInfo
 {
 	public String name;
 	public int population = 0;
+	public int PopInAgeInterval1 = 0;	//number of people from 18-35
+	public int PopInAgeInterval2 = 0;	//number of people from 36-60
+	public int PopInAgeInterval3 = 0;	//number of people above 61(including 61)
 	
 	public StateInfo(String name)
 	{
@@ -25,10 +28,12 @@ public class StateInfo
 	
 	/*************************************************
 	 * output this state's name and population
+	 * number of people within 3 age group seperately
 	 */
 	@Override
 	public String toString()
 	{
-		return name + "," + population;
+		return name + "," + population + "," + PopInAgeInterval1 +
+				"," + PopInAgeInterval2 + "," + PopInAgeInterval3;
 	}
 }
