@@ -4,6 +4,7 @@
 package finalProject;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import org.joda.time.DateTime;
@@ -31,7 +32,10 @@ public class DataLoader {
     final int MAIL_CONTENT = 10;
     final int EMAIL_CONTACT = 11;
     final int DECEASED = 12;
+    
+    /**************************  formats  *********************************************************/
     DateTimeFormatter TimeFormat = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
+    DecimalFormat df = new DecimalFormat("0.00");
 
 	/**************************  public variables  ************************************************/
 	public List<CustData> fileData;
@@ -112,7 +116,8 @@ public class DataLoader {
 				cdl.city = (dataLineArray[CITY].isEmpty()) ? "" : dataLineArray[CITY].trim();
 				cdl.state = (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim().toUpperCase();
 				cdl.zip = (dataLineArray[ZIP].isEmpty()) ? "" : dataLineArray[ZIP].trim();
-				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? new DateTime().toString(TimeFormat) : dataLineArray[BIRTHDATE].trim();
+//				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? new DateTime().toString(TimeFormat) : dataLineArray[BIRTHDATE].trim();
+				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? "" : dataLineArray[BIRTHDATE].trim(); //those without BD won't be counted
 				cdl.birthDate = DateTime.parse(birthDate, TimeFormat);
 				cdl.age = calculateAge(cdl.birthDate);
 				cdl.emailContact = dataLineArray[EMAIL_CONTACT].equals("1") ? true : false;
@@ -189,13 +194,13 @@ public class DataLoader {
 		// create a new state object
 		if (unique) {
 			StateInfo state = new StateInfo(State);
-			state.updatePop();
+			state.updatePop(); //update state's total population
 			updateStateSpecificPop(state, age); //update state's age group population
 			stateInfoList.add(state);
 		}
 		// update existing state's population
 		else {
-			stateInfoList.get(stateIndex).updatePop();
+			stateInfoList.get(stateIndex).updatePop(); //update state's total population
 			updateStateSpecificPop(stateInfoList.get(stateIndex), age); //update state's age group population
 		}
 	}
@@ -260,7 +265,43 @@ public class DataLoader {
         return age;
     }
 
+	/**************************************************
+	 * This method prints each state's age group 
+	 * percentage among all customers to a txt file.
+	 * 
+	 */
+	private void printOutputFile()
+	{
+		PrintWriter output;
+		
+		double p1;
+		double p2;
+		double p3;
+		double totalCust = fileData.size();
+		
+		try 
+		{
+			output = new PrintWriter(new FileWriter("src/Output File1.txt")); //instantiate printwriter object with specified path
+			output.println("All states' percentage"); //write title
+			for (int i=0; i < stateInfoList.size(); i++)
+			{
+				p1 = stateInfoList.get(i).caculPercent(1, totalCust); // % of people btw 18-35 in the state in all cust
+				p2 = stateInfoList.get(i).caculPercent(2, totalCust); // % of people btw 36-60 in the state in all cust
+				p3 = stateInfoList.get(i).caculPercent(3, totalCust); // % of people above 61 in the state in all cust
+				
+				output.println(stateInfoList.get(i).name + "," + 
+							df.format(p1) + "," + df.format(p2) + "," + 
+							df.format(p3)); //write info
+			}
+			output.close();
+		} 
+		catch (IOException e) 
+		{
+			System.out.println(e.getMessage());
+		}		
+	}
 	
+	/******************************************** display methods *****************************************************/
 	public void displayCustAddr()
 	{
 		int max = 0;
@@ -293,6 +334,12 @@ public class DataLoader {
 		}
 	}
 	
+	/********************************************
+	 * This method displays each state's total
+	 * population, plus number of people in
+	 * each of the three age group.
+	 * 
+	 */
 	public void displayStateInfoList() 
 	{
 		System.out.println("\n\nAll states' population");
@@ -302,16 +349,40 @@ public class DataLoader {
 		}
 	}
 	
+	/*********************************************************
+	 * This method displays each state's age group percentage/
+	 * 
+	 */
+	public void displayPercentage()
+	{
+		double p1;
+		double p2;
+		double p3;
+		double totalCust = fileData.size();
+		System.out.println("\n\nAll states' percentage");
+		for (int i=0; i < stateInfoList.size(); i++)
+		{
+			p1 = stateInfoList.get(i).caculPercent(1, totalCust); // % of people btw 18-35 in the state in all cust
+			p2 = stateInfoList.get(i).caculPercent(2, totalCust); // % of people btw 36-60 in the state in all cust
+			p3 = stateInfoList.get(i).caculPercent(3, totalCust); // % of people above 61 in the state in all cust
+			System.out.println(stateInfoList.get(i).name + "," + 
+						df.format(p1) + "," + df.format(p2) + "," + 
+						df.format(p3));
+		}
+	}
+
 	public static void main(String[] args)
 	{
 		DataLoader dl = new DataLoader();
 		
 		dl.openAndLoadFile();
-		System.out.println("\n\nLoad #1 StateInfo before quick sort");
-		dl.displayStateInfoList();
+//		System.out.println("\n\nLoad #1 StateInfo before quick sort");
+//		dl.displayStateInfoList();
 		MySorts.quickSortStateInfo(dl.stateInfoList, 0, dl.stateInfoList.size()-1);
-		System.out.println("\n\nLoad #1 StateInfo after quick sort");
+//		System.out.println("\n\nLoad #1 StateInfo after quick sort");
 		dl.displayStateInfoList();
+		dl.displayPercentage();
+		dl.printOutputFile();
 
 //		dl.openAndLoadFile();
 //		System.out.println("\n\nLoad #1 FD before selection sort");

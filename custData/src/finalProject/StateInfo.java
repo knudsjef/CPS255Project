@@ -26,9 +26,34 @@ public class StateInfo
 		this.population += 1;
 	}
 	
+	/*******************************************************************
+	 * This method calculates percentage of the state's one of the age 
+	 * group's people among the total customers, and return the value.
+	 * 
+	 * @param ageIntervalPop index of age group 
+	 * 							1: 18-35
+	 * 							2: 36-60
+	 * 							3: 61+
+	 * @param totalCustomer number of total customers
+	 * @return percentage of the state's age group
+	 */
+	public double caculPercent(int ageIntervalPop, double totalCustomer)
+	{
+		double percent = 0;
+		
+		if (ageIntervalPop == 1) //people from 18-35
+			percent = this.PopInAgeInterval1 / totalCustomer * 100;
+		else if (ageIntervalPop == 2) //people from 36-60
+			percent = this.PopInAgeInterval2 / totalCustomer * 100;
+		else if (ageIntervalPop == 3) //people above 61
+			percent = this.PopInAgeInterval3 / totalCustomer * 100;
+		
+		return percent;
+	}
+	
 	/*************************************************
-	 * output this state's name and population
-	 * number of people within 3 age group seperately
+	 * output this state's name, population and 
+	 * number of people within 3 age groups seperately
 	 */
 	@Override
 	public String toString()

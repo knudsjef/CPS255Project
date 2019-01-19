@@ -1,7 +1,7 @@
 /**
  * 
  */
-package sortExample;
+package finalProject;
 
 import java.util.*;
 
@@ -29,25 +29,9 @@ import java.util.*;
  *************************************************************/
 public class MySorts { 
 
-	public static boolean bubbleSortList(List<String> al)
+	public static boolean bubbleSortList(ArrayList<String> al)
 	{
-		//iterate through the whole list backwards
-		for(int i = al.size() - 1; i > 0; i--)
-		{
-			//loop from index 0 to i - 1
-			for(int j = 0; j < i; j++)
-			{
-				//if the index at j is greater than the index at j + 1
-				if(al.get(j).compareToIgnoreCase(al.get(j + 1)) > 0)
-				{
-					//switch the two numbers
-					String toSwitch = al.get(j+1);
-					al.set(j+1, al.get(j));
-					al.set(j, toSwitch);
-				}
-			}
-		}
-		
+		//copy, paste and modify!
 		return true;
 	}
 
@@ -64,13 +48,9 @@ public class MySorts {
 		{
 			int index = i;
 			for (int j = i + 1; j < al.size(); j++)
-			{
 				if (al.get(j).compareToIgnoreCase( al.get(index)) < 0 ) 
-				{
 					index = j;
-				}
-			}
-			
+
 			String smallerValue = al.get(index);  
 			al.set(index, al.get(i));
 			al.set(i, smallerValue);
@@ -87,7 +67,7 @@ public class MySorts {
 	 *  by state.  Upon completion, array list will be sorted by state, then 
 	 *  by zip.
 	 */
-	public static boolean selectionSortCustData(List<sortExample.CustData> fileData)
+	public static boolean selectionSortCustData(List<finalProject.CustData> fileData)
 	{         
 		for (int i = 0; i < fileData.size() - 1; i++)
 		{
@@ -96,7 +76,7 @@ public class MySorts {
 				if (fileData.get(j).state.compareToIgnoreCase( fileData.get(index).state) < 0 ) 
 					index = j;
 
-			CustData smallerValue = fileData.get(index); 
+			finalProject.CustData smallerValue = fileData.get(index); 
 			fileData.set(index, fileData.get(i));
 			fileData.set(i, smallerValue);
 		}
@@ -115,8 +95,7 @@ public class MySorts {
 		String temp;
 		for (int i = 1; i < al.size(); i++) {
 			for(int j = i ; j > 0 ; j--){
-				if(al.get(j).compareToIgnoreCase( al.get(j-1) ) < 0)
-				{
+				if(al.get(j).compareToIgnoreCase( al.get(j-1) ) < 0){
 					temp = al.get(j);
 					al.set(j, al.get(j-1));
 					al.set(j-1, temp);
@@ -135,9 +114,9 @@ public class MySorts {
 	 *  by state.  Upon completion, array list will be sorted by state, then 
 	 *  by zip.
 	 */
-	public static boolean insertionSortCustData(List<CustData> cd)
+	public static boolean insertionSortCustData(List<sortExample.CustData> cd)
 	{         
-		CustData temp;
+		sortExample.CustData temp;
 		for (int i = 1; i < cd.size(); i++) {
 			for(int j = i ; j > 0 ; j--){
 				if(cd.get(j).state.compareToIgnoreCase( cd.get(j-1).state ) < 0){
@@ -173,12 +152,12 @@ public class MySorts {
 		int i = first, j = last;
 		while (i <= j) 
 		{
-		 	/**
-             		* In each iteration, we will identify a number from left side which 
-             		* is greater than the pivot value, and also we will identify a number 
-             		* from right side which is less then the pivot value. Once the search 
-             		* is done, we exchange both numbers.
-             		*/
+			/**
+             * In each iteration, we will identify a number from left side which 
+             * is greater than the pivot value, and also we will identify a number 
+             * from right side which is less then the pivot value. Once the search 
+             * is done, we exchange both numbers.
+             */
 			while (al.get(i).compareToIgnoreCase(pivot) < 0)
 			{
 				i++;
@@ -236,11 +215,11 @@ public class MySorts {
 		while (i <= j) 
 		{
 			/**
-             		* In each iteration, we will identify a number from left side which 
-            		* is greater than the pivot value, and also we will identify a number 
-             		* from right side which is less then the pivot value. Once the search 
-             		* is done, we exchange both numbers.
-             		*/
+             * In each iteration, we will identify a number from left side which 
+             * is greater than the pivot value, and also we will identify a number 
+             * from right side which is less then the pivot value. Once the search 
+             * is done, we exchange both numbers.
+             */
 			while (fileData.get(i).state.compareToIgnoreCase(pivot) < 0)
 			{
 				i++;
@@ -271,169 +250,70 @@ public class MySorts {
 			quickSortCustData(fileData, i, last);
 	}
 	
-	
-	
+	/*****************************************************************
+	 * 
+	 * @param al 	List to be sorted
+	 * @param first	begin index of the element
+	 * @param last	end index of the element
+	 * 
+	 * This method provides a quicksort on the list data.
+	 */
+	public static void quickSortStateInfo(List<StateInfo> al, int first, int last)
+	{
+		if (al == null || al.size() == 0)
+			return;
+
+		if (first >= last)
+			return;
+
+		// pick the pivot(middle index element)
+		int middle = first + (last - first) / 2;
+		double pivot = al.get(middle).population;
+
+		// make left < pivot and right > pivot
+		int i = first, j = last;
+		while (i <= j) 
+		{
+			/**
+             * In each iteration, we will identify a number from left side which 
+             * is greater than the pivot value, and also we will identify a number 
+             * from right side which is less then the pivot value. Once the search 
+             * is done, we exchange both numbers.
+             */
+			while (al.get(i).population > pivot)
+			{
+				i++;
+			}
+
+			while (al.get(j).population < pivot)
+			{
+				j--;
+			}
+
+			if (i <= j) 
+			{
+				StateInfo temp = al.get(i);
+				al.set(i, al.get(j));
+				al.set(j, temp);
+				//move index to next position on both sides
+				i++;
+				j--;
+			}
+			
+		}		
+
+		// recursively sort two sub parts
+		if (first < j)
+			quickSortStateInfo(al, first, j);
+
+		if (last > i)
+			quickSortStateInfo(al, i, last);
+	}
 	
 	public boolean mergeSortList(ArrayList<String> al)
 	{
 		//copy, paste and modify!
 		return true;
 	}
-	
-	
-	
-	
-	/*********************************************************************************************
-	*	                                                                                    *
-	*	                         mergeSortList                                              *
-	*	                                                                                    *
-        *********************************************************************************************/
-	  public static boolean mergeSortList(List<String> al)
-    {
-        String[] arrays = new String[al.size()];
-        for (int i = 0; i < al.size(); i++)
-        {
-            arrays[i] = al.get(i);
-        }
-
-        MySorts newSort = new MySorts();
-        newSort.sort(arrays, null, null, 0);
-        for (int i = 0; i < al.size(); i++)
-        {
-            al.set(i, arrays[i]);
-        }
-        return true;
-    }
-
-    public void sort(String[] inputArr, String[] array, String[] tempMergArr, int length)
-    {
-        array = inputArr;
-        length = inputArr.length;
-        tempMergArr = new String[length];
-        doMergeSort(0, length - 1, tempMergArr, array);
-    }
-
-    private void doMergeSort(int lowerIndex, int higherIndex, String[] tempMergArr, String[] array)
-    {
-        if (lowerIndex < higherIndex)
-        {
-            int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
-            // Below step sorts the left side of the array
-            doMergeSort(lowerIndex, middle, tempMergArr, array);
-            // Below step sorts the right side of the array
-            doMergeSort(middle + 1, higherIndex, tempMergArr, array);
-            // Now merge both sides
-            mergeParts(lowerIndex, middle, higherIndex, tempMergArr, array);
-        }
-    }
-
-    private void mergeParts(int lowerIndex, int middle, int higherIndex, String[] tempMergArr, String[] array)
-    {
-
-        for (int i = lowerIndex; i <= higherIndex; i++)
-        {
-            tempMergArr[i] = array[i];
-        }
-        int i = lowerIndex;
-        int j = middle + 1;
-        int k = lowerIndex;
-        while (i <= middle && j <= higherIndex)
-        {
-            if (tempMergArr[i].compareToIgnoreCase(tempMergArr[j]) < 0)
-            {
-                array[k] = tempMergArr[i];
-                i++;
-            }
-            else
-            {
-                array[k] = tempMergArr[j];
-                j++;
-            }
-            k++;
-        }
-        while (i <= middle)
-        {
-            array[k] = tempMergArr[i];
-            k++;
-            i++;
-        }
-    }
-
-	
-	/*********************************************************************************************
-	*	                                                                                    *
-	*	                         mergeSortCustData                                          *
-	*	                                                                                    *
-        *********************************************************************************************/
-    public static boolean mergeSortCustData(List<CustData> cd)
-    {
-        CustData[] arrays = new CustData[cd.size()];
-        for (int i = 0; i < cd.size(); i++)
-        {
-            arrays[i] = cd.get(i);
-        }
-
-        MySorts newSort = new MySorts();
-        newSort.sort2(arrays, null, null, 0);
-        for (int i = 0; i < cd.size(); i++)
-        {
-            cd.set(i, arrays[i]);
-        }
-        return true;
-    }
-
-    public void sort2(CustData[] inputArr, CustData[] array, CustData[] tempMergArr, int length)
-    {
-        array = inputArr;
-        length = inputArr.length;
-        tempMergArr = new CustData[length];
-        doMergeSort2(0, length - 1, tempMergArr, array);
-    }
-
-    private void doMergeSort2(int lowerIndex, int higherIndex, CustData[] tempMergArr, CustData[] array)
-    {
-        if (lowerIndex < higherIndex)
-        {
-            int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
-            // Below step sorts the left side of the array
-            doMergeSort2(lowerIndex, middle, tempMergArr, array);
-            // Below step sorts the right side of the array
-            doMergeSort2(middle + 1, higherIndex, tempMergArr, array);
-            // Now merge both sides
-            mergeParts2(lowerIndex, middle, higherIndex, tempMergArr, array);
-        }
-    }
-
-    private void mergeParts2(int lowerIndex, int middle, int higherIndex, CustData[] tempMergArr, CustData[] array)
-    {
-
-        for (int i = lowerIndex; i <= higherIndex; i++)
-        {
-            tempMergArr[i] = array[i];
-        }
-        int i = lowerIndex;
-        int j = middle + 1;
-        int k = lowerIndex;
-        while (i <= middle && j <= higherIndex)
-        {
-            if (tempMergArr[i].state.compareToIgnoreCase(tempMergArr[j].state) < 0)
-            {
-                array[k] = tempMergArr[i];
-                i++;
-            }
-            else
-            {
-                array[k] = tempMergArr[j];
-                j++;
-            }
-            k++;
-        }
-        while (i <= middle)
-        {
-            array[k] = tempMergArr[i];
-            k++;
-            i++;
-        }
-    }
 
 }  // end class MySorts
