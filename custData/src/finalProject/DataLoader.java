@@ -185,7 +185,7 @@ public class DataLoader {
 		// check for duplicate descriptions in state array
 		for (int i=0; i<stateInfoList.size(); i++)
 		{
-			if (stateInfoList.get(i).name.equalsIgnoreCase(State)) {
+			if (stateInfoList.get(i).getName().equalsIgnoreCase(State)) {
 				unique=false;
 				stateIndex = i;
 			}
@@ -208,17 +208,17 @@ public class DataLoader {
 	/***************************************************************
 	 * This method updates number of people of a state's age group
 	 * 
-	 * @param state currenct state
+	 * @param state current state
 	 * @param age the person's age
 	 */
 	private void updateStateSpecificPop(StateInfo state, int age)
 	{
 		if (age >= 18 && age <=35) // between 18 and 35
-			state.PopInAgeInterval1 += 1;
+			state.setPopInAgeInterval1(state.getPopInAgeInterval1() + 1);
 		else if (age >= 36 && age <= 60) // between 36 and 60
-			state.PopInAgeInterval2 += 1;
+			state.setPopInAgeInterval2(state.getPopInAgeInterval2() + 1);
 		else if (age >= 61) // above 61(including 61)
-			state.PopInAgeInterval3 += 1;
+			state.setPopInAgeInterval3(state.getPopInAgeInterval3() + 1);
 	}
 	
 	private int calculateAge(DateTime birthDay)
@@ -289,7 +289,7 @@ public class DataLoader {
 				p2 = stateInfoList.get(i).caculPercent(2, totalCust); // % of people btw 36-60 in the state in all cust
 				p3 = stateInfoList.get(i).caculPercent(3, totalCust); // % of people above 61 in the state in all cust
 				
-				output.println(stateInfoList.get(i).name + "," + 
+				output.println(stateInfoList.get(i).getName() + "," + 
 							df.format(p1) + "," + df.format(p2) + "," + 
 							df.format(p3)); //write info
 			}
@@ -365,7 +365,7 @@ public class DataLoader {
 			p1 = stateInfoList.get(i).caculPercent(1, totalCust); // % of people btw 18-35 in the state in all cust
 			p2 = stateInfoList.get(i).caculPercent(2, totalCust); // % of people btw 36-60 in the state in all cust
 			p3 = stateInfoList.get(i).caculPercent(3, totalCust); // % of people above 61 in the state in all cust
-			System.out.println(stateInfoList.get(i).name + "," + 
+			System.out.println(stateInfoList.get(i).getName() + "," + 
 						df.format(p1) + "," + df.format(p2) + "," + 
 						df.format(p3));
 		}

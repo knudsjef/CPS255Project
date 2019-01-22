@@ -10,20 +10,75 @@ package finalProject;
 
 public class StateInfo 
 {
-	public String name;
-	public int population = 0;
-	public int PopInAgeInterval1 = 0;	//number of people from 18-35
-	public int PopInAgeInterval2 = 0;	//number of people from 36-60
-	public int PopInAgeInterval3 = 0;	//number of people above 61(including 61)
 	
+	private String name;
+	private int population = 0;
+	private int popInAgeInterval1 = 0;	//number of people from 18-35
+	private int popInAgeInterval2 = 0;	//number of people from 36-60
+	private int popInAgeInterval3 = 0;	//number of people above 61(including 61)
+	
+	//*************************CONSTRUCTOR*****************************
 	public StateInfo(String name)
 	{
 		this.name = name;
 	}
 	
+	
+	//***********************GETTERS***********************************
+	public String getName()
+	{
+		return name;
+	}
+	
+	public int getPopulation()
+	{
+		return population;
+	}
+	
+	public int getPopInAgeInterval1()
+	{
+		return popInAgeInterval1;
+	}
+	
+	public int getPopInAgeInterval2()
+	{
+		return popInAgeInterval2;
+	}
+	
+	public int getPopInAgeInterval3()
+	{
+		return popInAgeInterval3;
+	}
+	
+	
+	//******************************SETTERS*****************************************
 	public void updatePop()
 	{
 		this.population += 1;
+	}
+	
+	public void setPopInAgeInterval1(int toSet)
+	{
+		if(toSet >= 0)
+		{
+			popInAgeInterval1 = toSet;
+		}
+	}
+	
+	public void setPopInAgeInterval2(int toSet)
+	{
+		if(toSet >= 0)
+		{
+			popInAgeInterval2 = toSet;
+		}
+	}
+	
+	public void setPopInAgeInterval3(int toSet)
+	{
+		if(toSet >= 0)
+		{
+			popInAgeInterval3 = toSet;
+		}
 	}
 	
 	/*******************************************************************
@@ -42,11 +97,11 @@ public class StateInfo
 		double percent = 0;
 		
 		if (ageIntervalPop == 1) //people from 18-35
-			percent = this.PopInAgeInterval1 / totalCustomer * 100;
+			percent = this.popInAgeInterval1 / totalCustomer * 100;
 		else if (ageIntervalPop == 2) //people from 36-60
-			percent = this.PopInAgeInterval2 / totalCustomer * 100;
+			percent = this.popInAgeInterval2 / totalCustomer * 100;
 		else if (ageIntervalPop == 3) //people above 61
-			percent = this.PopInAgeInterval3 / totalCustomer * 100;
+			percent = this.popInAgeInterval3 / totalCustomer * 100;
 		
 		return percent;
 	}
@@ -58,7 +113,7 @@ public class StateInfo
 	@Override
 	public String toString()
 	{
-		return name + "," + population + "," + PopInAgeInterval1 +
-				"," + PopInAgeInterval2 + "," + PopInAgeInterval3;
+		return name + "," + population + "," + popInAgeInterval1 +
+				"," + popInAgeInterval2 + "," + popInAgeInterval3;
 	}
 }

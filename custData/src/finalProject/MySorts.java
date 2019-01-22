@@ -268,7 +268,7 @@ public class MySorts {
 
 		// pick the pivot(middle index element)
 		int middle = first + (last - first) / 2;
-		double pivot = al.get(middle).population;
+		double pivot = al.get(middle).getPopulation();
 
 		// make left < pivot and right > pivot
 		int i = first, j = last;
@@ -280,12 +280,12 @@ public class MySorts {
              * from right side which is less then the pivot value. Once the search 
              * is done, we exchange both numbers.
              */
-			while (al.get(i).population > pivot)
+			while (al.get(i).getPopulation() > pivot)
 			{
 				i++;
 			}
 
-			while (al.get(j).population < pivot)
+			while (al.get(j).getPopulation() < pivot)
 			{
 				j--;
 			}
