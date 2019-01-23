@@ -41,6 +41,7 @@ public class DataLoader {
 	public List<CustData> fileData;
 	public List<String> stateList;
 	public List<StateInfo> stateInfoList;
+	public List<CustData> mailingList;
 
 	/*************************  private variables  ************************************************/
 	private Scanner fileIn;
@@ -51,6 +52,7 @@ public class DataLoader {
 		fileData = new ArrayList<CustData>();
 		stateList = new ArrayList<String>();	
 		stateInfoList = new ArrayList<StateInfo>();
+		mailingList = new ArrayList<CustData>();
 
 		if (  openFile()  )
 		{
@@ -116,12 +118,14 @@ public class DataLoader {
 				cdl.city = (dataLineArray[CITY].isEmpty()) ? "" : dataLineArray[CITY].trim();
 				cdl.state = (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim().toUpperCase();
 				cdl.zip = (dataLineArray[ZIP].isEmpty()) ? "" : dataLineArray[ZIP].trim();
+				cdl.mailContact = dataLineArray[MAIL_CONTENT].equals("1") ? true : false;
+				cdl.emailContact = dataLineArray[EMAIL_CONTACT].equals("1") ? true : false;
+				cdl.deceased = dataLineArray[DECEASED].equals("1") ? true : false;
+				addMailingList(cdl);
 //				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? new DateTime().toString(TimeFormat) : dataLineArray[BIRTHDATE].trim();
 				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? "" : dataLineArray[BIRTHDATE].trim(); //those without BD won't be counted
 				cdl.birthDate = DateTime.parse(birthDate, TimeFormat);
 				cdl.age = calculateAge(cdl.birthDate);
-				cdl.emailContact = dataLineArray[EMAIL_CONTACT].equals("1") ? true : false;
-				cdl.deceased = dataLineArray[DECEASED].equals("1") ? true : false;
 				//We're ignoring comments
 				fileData.add(recNum, cdl);
 				recNum++;
@@ -265,12 +269,24 @@ public class DataLoader {
         return age;
     }
 
+	/*********************************************************
+	 * This method adds a customer who is non-deceased
+	 * and wants to receive a mail to a List
+	 * 
+	 * @param custData customer
+	 */
+	private void addMailingList(CustData custData)
+	{
+		if (!(custData.deceased) && custData.mailContact)
+			mailingList.add(custData);
+	}
+	
 	/**************************************************
 	 * This method prints each state's age group 
 	 * percentage among all customers to a txt file.
 	 * 
 	 */
-	private void printOutputFile()
+	private void printOutputFile1()
 	{
 		PrintWriter output;
 		
@@ -299,6 +315,30 @@ public class DataLoader {
 		{
 			System.out.println(e.getMessage());
 		}		
+	}
+	
+	/*******************************************************
+	 * This method prints every customer who's non-deceased,
+	 * wants to receive a mail to a txt file.
+	 * 
+	 */
+	private void printOutputFile2()
+	{
+		PrintWriter output;
+		
+		try
+		{
+			output = new PrintWriter(new FileWriter("src/Output File2.txt")); //instantiate printwriter object with specified path
+			for (int i=0; i < mailingList.size(); i++)
+			{
+				output.println(mailingList.get(i).toString());
+			}
+			output.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	/******************************************** display methods *****************************************************/
@@ -379,10 +419,12 @@ public class DataLoader {
 //		System.out.println("\n\nLoad #1 StateInfo before quick sort");
 //		dl.displayStateInfoList();
 		MySorts.quickSortStateInfo(dl.stateInfoList, 0, dl.stateInfoList.size()-1);
+		MySorts.quickSortCustData(dl.mailingList, 0, dl.mailingList.size()-1);
 //		System.out.println("\n\nLoad #1 StateInfo after quick sort");
 		dl.displayStateInfoList();
 		dl.displayPercentage();
-		dl.printOutputFile();
+		dl.printOutputFile1();
+		dl.printOutputFile2();
 
 //		dl.openAndLoadFile();
 //		System.out.println("\n\nLoad #1 FD before selection sort");
