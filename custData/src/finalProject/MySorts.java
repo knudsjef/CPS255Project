@@ -220,7 +220,7 @@ public class MySorts {
              * from right side which is less then the pivot value. Once the search 
              * is done, we exchange both numbers.
              */
-			while ((fileData.get(i).state + fileData.get(i).zip).state.compareToIgnoreCase(pivot) < 0)
+			while ((fileData.get(i).state + fileData.get(i).zip).compareToIgnoreCase(pivot) < 0)
 			{
 				i++;
 			}
