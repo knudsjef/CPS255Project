@@ -36,8 +36,8 @@ public class CustData
 	@Override
 	public String toString()
 	{
-		return this.lname + ", " + this.fname + "; " + 
-				this.address + "; " +
-				this.city + ", " + this.state + "  " + this.zip;
+		return this.lname + "," + this.fname + "," + 
+				this.address + "," +
+				this.city + "," + this.state + "," + this.zip;
 	}
 } // end class CustData
