@@ -198,7 +198,7 @@ public class MySorts {
 	 * by state. Upon completion, array list will be sorted by state,
 	 * then by zip.
 	 */
-	public static void quickSortCustData(List<sortExample.CustData> fileData, int first, int last)
+	public static void quickSortCustData(List<CustData> fileData, int first, int last)
 	{
 		if (fileData == null || fileData.size() == 0)
 			return;
@@ -208,7 +208,7 @@ public class MySorts {
 
 		// pick the pivot(middle index element)
 		int middle = first + (last - first) / 2;
-		String pivot = fileData.get(middle).state;
+		String pivot = fileData.get(middle).state + fileData.get(middle).zip;;
 
 		// make left < pivot and right > pivot
 		int i = first, j = last;
@@ -220,19 +220,19 @@ public class MySorts {
              * from right side which is less then the pivot value. Once the search 
              * is done, we exchange both numbers.
              */
-			while (fileData.get(i).state.compareToIgnoreCase(pivot) < 0)
+			while ((fileData.get(i).state + fileData.get(i).zip).state.compareToIgnoreCase(pivot) < 0)
 			{
 				i++;
 			}
 
-			while (fileData.get(j).state.compareToIgnoreCase(pivot) > 0)
+			while ((fileData.get(j).state + fileData.get(j).zip).compareToIgnoreCase(pivot) > 0)
 			{
 				j--;
 			}
 
 			if (i <= j) 
 			{
-				sortExample.CustData temp = fileData.get(i);
+				CustData temp = fileData.get(i);
 				fileData.set(i, fileData.get(j));
 				fileData.set(j, temp);
 				//move index to next position on both sides
