@@ -28,4 +28,16 @@ public class CustData
 	public String comments;
 	public int age;
 	
+/***********************************************************
+	 * Output the customer's last name, first name, address,
+	 * city, state, and zip.
+	 * 
+	 */
+	@Override
+	public String toString()
+	{
+		return this.lname + ", " + this.fname + "; " + 
+				this.address + "; " +
+				this.city + ", " + this.state + "  " + this.zip;
+	}
 } // end class CustData
