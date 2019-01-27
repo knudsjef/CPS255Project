@@ -111,28 +111,28 @@ public class DataLoader {
 				}
 
 				// load record into arrays
-				cdl.custId = (dataLineArray[CUST_ID].isEmpty()) ? "" : dataLineArray[CUST_ID].trim(); 
-				cdl.lname = (dataLineArray[LNAME].isEmpty()) ? "" : dataLineArray[LNAME].trim();
-				cdl.fname = (dataLineArray[FNAME].isEmpty()) ? "" : dataLineArray[FNAME].trim();
-				cdl.address = (dataLineArray[ADDRESS].isEmpty()) ? "" : dataLineArray[ADDRESS].trim();
-				cdl.city = (dataLineArray[CITY].isEmpty()) ? "" : dataLineArray[CITY].trim();
-				cdl.state = (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim().toUpperCase();
-				cdl.zip = (dataLineArray[ZIP].isEmpty()) ? "" : dataLineArray[ZIP].trim();
-				cdl.mailContact = dataLineArray[MAIL_CONTENT].equals("1") ? true : false;
-				cdl.emailContact = dataLineArray[EMAIL_CONTACT].equals("1") ? true : false;
-				cdl.deceased = dataLineArray[DECEASED].equals("1") ? true : false;
+				cdl.setCustomerId((dataLineArray[CUST_ID].isEmpty()) ? "" : dataLineArray[CUST_ID].trim()); 
+				cdl.setLastName((dataLineArray[LNAME].isEmpty()) ? "" : dataLineArray[LNAME].trim());
+				cdl.setFirstName((dataLineArray[FNAME].isEmpty()) ? "" : dataLineArray[FNAME].trim());
+				cdl.setAddress((dataLineArray[ADDRESS].isEmpty()) ? "" : dataLineArray[ADDRESS].trim());
+				cdl.setCity((dataLineArray[CITY].isEmpty()) ? "" : dataLineArray[CITY].trim());
+				cdl.setState((dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim().toUpperCase());
+				cdl.setZip((dataLineArray[ZIP].isEmpty()) ? "" : dataLineArray[ZIP].trim());
+				cdl.setMailContact(dataLineArray[MAIL_CONTENT].equals("1") ? true : false);
+				cdl.setEmailContact(dataLineArray[EMAIL_CONTACT].equals("1") ? true : false);
+				cdl.setDeceased(dataLineArray[DECEASED].equals("1") ? true : false);
 				addMailingList(cdl);
 //				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? new DateTime().toString(TimeFormat) : dataLineArray[BIRTHDATE].trim();
 				birthDate = (dataLineArray[BIRTHDATE].isEmpty())? "" : dataLineArray[BIRTHDATE].trim(); //those without BD won't be counted
-				cdl.birthDate = DateTime.parse(birthDate, TimeFormat);
-				cdl.age = calculateAge(cdl.birthDate);
+				cdl.setBirthDate(DateTime.parse(birthDate, TimeFormat));
+				cdl.setAge(calculateAge(cdl.getBirthDate()));
 				//We're ignoring comments
 				fileData.add(recNum, cdl);
 				recNum++;
-				if (isUniqueState(cdl.state) && cdl.state.length()==2)
+				if (isUniqueState(cdl.getState()) && cdl.getState().length()==2)
 					stateList.add( (dataLineArray[STATE].isEmpty()) ? "" : dataLineArray[STATE].trim() );
 				//Collections.sort(stateList);
-				updateStatePopulation(cdl.state, cdl.age);
+				updateStatePopulation(cdl.getState(), cdl.getAge());
 			}  // end try 
 			catch (Exception e)
 			{
@@ -277,7 +277,7 @@ public class DataLoader {
 	 */
 	private void addMailingList(CustData custData)
 	{
-		if (!(custData.deceased) && custData.mailContact)
+		if (!(custData.isDeceased()) && custData.canEmailContact())
 			mailingList.add(custData);
 	}
 	
@@ -353,9 +353,7 @@ public class DataLoader {
 		System.out.println("\n\n First 20 Customers");
 		for (int i=0; i < max; i++)
 		{
-			System.out.println(fileData.get(i).lname + ", " + fileData.get(i).fname + 
-					fileData.get(i).address + "; " + fileData.get(i).city +
-					", " + fileData.get(i).state + "  " + fileData.get(i).zip);
+			System.out.println(fileData.get(i).toString());
 		}
 	}
 

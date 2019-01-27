@@ -73,7 +73,7 @@ public class MySorts {
 		{
 			int index = i;
 			for (int j = i + 1; j < fileData.size(); j++)
-				if (fileData.get(j).state.compareToIgnoreCase( fileData.get(index).state) < 0 ) 
+				if (fileData.get(j).getState().compareToIgnoreCase( fileData.get(index).getState()) < 0 ) 
 					index = j;
 
 			finalProject.CustData smallerValue = fileData.get(index); 
@@ -208,7 +208,7 @@ public class MySorts {
 
 		// pick the pivot(middle index element)
 		int middle = first + (last - first) / 2;
-		String pivot = fileData.get(middle).state + fileData.get(middle).zip;;
+		String pivot = fileData.get(middle).getState() + fileData.get(middle).getZip();
 
 		// make left < pivot and right > pivot
 		int i = first, j = last;
@@ -220,12 +220,12 @@ public class MySorts {
              * from right side which is less then the pivot value. Once the search 
              * is done, we exchange both numbers.
              */
-			while ((fileData.get(i).state + fileData.get(i).zip).compareToIgnoreCase(pivot) < 0)
+			while ((fileData.get(i).getState() + fileData.get(i).getZip()).compareToIgnoreCase(pivot) < 0)
 			{
 				i++;
 			}
 
-			while ((fileData.get(j).state + fileData.get(j).zip).compareToIgnoreCase(pivot) > 0)
+			while ((fileData.get(j).getState() + fileData.get(j).getZip()).compareToIgnoreCase(pivot) > 0)
 			{
 				j--;
 			}
