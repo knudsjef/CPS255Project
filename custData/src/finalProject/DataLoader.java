@@ -19,19 +19,19 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DataLoader {
 	/*************************  public constants  *************************************************/
-	final int CUST_ID = 0;
-    final int LNAME = 1;
-    final int FNAME = 2;
-    final int ADDRESS = 3;
-    final int CITY = 4;
-    final int STATE = 5;
-    final int ZIP = 6;
-    final int BIRTHDATE = 7;
-    final int PHONE = 8;
-    final int EMAIL = 9;
-    final int MAIL_CONTENT = 10;
-    final int EMAIL_CONTACT = 11;
-    final int DECEASED = 12;
+	private final int CUST_ID = 0;
+    private final int LNAME = 1;
+    private final int FNAME = 2;
+    private final int ADDRESS = 3;
+    private final int CITY = 4;
+    private final int STATE = 5;
+    private final int ZIP = 6;
+    private final int BIRTHDATE = 7;
+    private final int PHONE = 8;
+    private final int EMAIL = 9;
+    private final int MAIL_CONTENT = 10;
+    private final int EMAIL_CONTACT = 11;
+    private final int DECEASED = 12;
     
     /**************************  formats  *********************************************************/
     private DateTimeFormatter TimeFormat = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
@@ -139,12 +139,18 @@ public class DataLoader {
 		}// end while fileIn.hasNext...
 	}
 
+	/**
+	 * Method - isUniqueState
+	 * This method will check the list of states and determine if the state to be added is already on there
+	 * @param newState The state to be added to the list
+	 * @return Whether the state is in the list already or not
+	 */
 	private boolean isUniqueState(String newState)
 	{
 		boolean unique = true;
 
 		// check for duplicate descriptions in file contents array
-		for (int i=0; i< stateList.size(); i++)
+		for (int i = 0; i < stateList.size(); i++)
 		{
 			if ( stateList.get(i).equalsIgnoreCase(newState) )
 				unique = false ;
@@ -153,6 +159,12 @@ public class DataLoader {
 		return unique;
 	}
 
+	/**
+	 * Method - removeQuotes
+	 * This method will remove quotes from a string
+	 * @param str The string to remove quotes from
+	 * @return The string without quotation marks
+	 */
 	private String removeQuotes(String str)
 	{
 		String newStr=str;
@@ -184,11 +196,12 @@ public class DataLoader {
 	{			
 		boolean unique=true;
 		int stateIndex=0;
+		
 		// check for duplicate descriptions in state array
-		for (int i=0; i<stateInfoList.size(); i++)
+		for (int i = 0; i<stateInfoList.size(); i++)
 		{
 			if (stateInfoList.get(i).getName().equalsIgnoreCase(State)) {
-				unique=false;
+				unique = false;
 				stateIndex = i;
 			}
 		}
@@ -223,6 +236,12 @@ public class DataLoader {
 			state.setPopInAgeInterval3(state.getPopInAgeInterval3() + 1);
 	}
 	
+	/**
+	 * Method - calculateAge
+	 * This method will calculate the age based on an input birth date
+	 * @param birthDay The date of birth
+	 * @return The age between input day and the current day
+	 */
 	private int calculateAge(DateTime birthDay)
     {
         int age = 0;
