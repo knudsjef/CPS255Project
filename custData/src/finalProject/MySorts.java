@@ -29,12 +29,29 @@ import java.util.*;
  *************************************************************/
 public class MySorts { 
 
-	public static boolean bubbleSortList(ArrayList<String> al)
+	public static boolean bubbleSortList(List<String> al)
 	{
-		//copy, paste and modify!
+		//iterate through the whole list backwards
+		for(int i = al.size() - 1; i > 0; i--)
+		{
+			//loop from index 0 to i - 1
+			for(int j = 0; j < i; j++)
+			{
+				//if the index at j is greater than the index at j + 1
+				if(al.get(j).compareToIgnoreCase(al.get(j + 1)) > 0)
+				{
+					//switch the two numbers
+					String toSwitch = al.get(j+1);
+					al.set(j+1, al.get(j));
+					al.set(j, toSwitch);
+				}
+			}
+		}
+		
 		return true;
 	}
-
+	
+	
 	/*************************************************************************
 	 * 
 	 * @param al  List to be sorted
@@ -310,10 +327,161 @@ public class MySorts {
 			quickSortStateInfo(al, i, last);
 	}
 	
-	public boolean mergeSortList(ArrayList<String> al)
-	{
-		//copy, paste and modify!
-		return true;
-	}
+	
+	
+	/*********************************************************************************************
+	*	                                                                                    *
+	*	                         mergeSortList                                              *
+	*	                                                                                    *
+        *********************************************************************************************/
+	  public static boolean mergeSortList(List<String> al)
+    {
+        String[] arrays = new String[al.size()];
+        for (int i = 0; i < al.size(); i++)
+        {
+            arrays[i] = al.get(i);
+        }
+
+        MySorts newSort = new MySorts();
+        newSort.sort(arrays, null, null, 0);
+        for (int i = 0; i < al.size(); i++)
+        {
+            al.set(i, arrays[i]);
+        }
+        return true;
+    }
+
+    public void sort(String[] inputArr, String[] array, String[] tempMergArr, int length)
+    {
+        array = inputArr;
+        length = inputArr.length;
+        tempMergArr = new String[length];
+        doMergeSort(0, length - 1, tempMergArr, array);
+    }
+
+    private void doMergeSort(int lowerIndex, int higherIndex, String[] tempMergArr, String[] array)
+    {
+        if (lowerIndex < higherIndex)
+        {
+            int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
+            // Below step sorts the left side of the array
+            doMergeSort(lowerIndex, middle, tempMergArr, array);
+            // Below step sorts the right side of the array
+            doMergeSort(middle + 1, higherIndex, tempMergArr, array);
+            // Now merge both sides
+            mergeParts(lowerIndex, middle, higherIndex, tempMergArr, array);
+        }
+    }
+
+    private void mergeParts(int lowerIndex, int middle, int higherIndex, String[] tempMergArr, String[] array)
+    {
+
+        for (int i = lowerIndex; i <= higherIndex; i++)
+        {
+            tempMergArr[i] = array[i];
+        }
+        int i = lowerIndex;
+        int j = middle + 1;
+        int k = lowerIndex;
+        while (i <= middle && j <= higherIndex)
+        {
+            if (tempMergArr[i].compareToIgnoreCase(tempMergArr[j]) < 0)
+            {
+                array[k] = tempMergArr[i];
+                i++;
+            }
+            else
+            {
+                array[k] = tempMergArr[j];
+                j++;
+            }
+            k++;
+        }
+        while (i <= middle)
+        {
+            array[k] = tempMergArr[i];
+            k++;
+            i++;
+        }
+    }
+
+	
+	/*********************************************************************************************
+	*	                                                                                    *
+	*	                         mergeSortCustData                                          *
+	*	                                                                                    *
+        *********************************************************************************************/
+    public static boolean mergeSortCustData(List<CustData> cd)
+    {
+        CustData[] arrays = new CustData[cd.size()];
+        for (int i = 0; i < cd.size(); i++)
+        {
+            arrays[i] = cd.get(i);
+        }
+
+        MySorts newSort = new MySorts();
+        newSort.sort2(arrays, null, null, 0);
+        for (int i = 0; i < cd.size(); i++)
+        {
+            cd.set(i, arrays[i]);
+        }
+        return true;
+    }
+
+    public void sort2(CustData[] inputArr, CustData[] array, CustData[] tempMergArr, int length)
+    {
+        array = inputArr;
+        length = inputArr.length;
+        tempMergArr = new CustData[length];
+        doMergeSort2(0, length - 1, tempMergArr, array);
+    }
+
+    private void doMergeSort2(int lowerIndex, int higherIndex, CustData[] tempMergArr, CustData[] array)
+    {
+        if (lowerIndex < higherIndex)
+        {
+            int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
+            // Below step sorts the left side of the array
+            doMergeSort2(lowerIndex, middle, tempMergArr, array);
+            // Below step sorts the right side of the array
+            doMergeSort2(middle + 1, higherIndex, tempMergArr, array);
+            // Now merge both sides
+            mergeParts2(lowerIndex, middle, higherIndex, tempMergArr, array);
+        }
+    }
+
+    private void mergeParts2(int lowerIndex, int middle, int higherIndex, CustData[] tempMergArr, CustData[] array)
+    {
+
+        for (int i = lowerIndex; i <= higherIndex; i++)
+        {
+            tempMergArr[i] = array[i];
+        }
+        int i = lowerIndex;
+        int j = middle + 1;
+        int k = lowerIndex;
+        while (i <= middle && j <= higherIndex)
+        {
+            if (tempMergArr[i].state.compareToIgnoreCase(tempMergArr[j].state) < 0)
+            {
+                array[k] = tempMergArr[i];
+                i++;
+            }
+            else
+            {
+                array[k] = tempMergArr[j];
+                j++;
+            }
+            k++;
+        }
+        while (i <= middle)
+        {
+            array[k] = tempMergArr[i];
+            k++;
+            i++;
+        }
+    }
+	
+	
 
 }  // end class MySorts
