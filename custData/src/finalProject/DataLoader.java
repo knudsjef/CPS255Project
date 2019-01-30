@@ -34,16 +34,14 @@ public class DataLoader {
     final int DECEASED = 12;
     
     /**************************  formats  *********************************************************/
-    DateTimeFormatter TimeFormat = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
-    DecimalFormat df = new DecimalFormat("0.00");
+    private DateTimeFormatter TimeFormat = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
+    private DecimalFormat df = new DecimalFormat("0.00");
 
-	/**************************  public variables  ************************************************/
-	public List<CustData> fileData;
-	public List<String> stateList;
-	public List<StateInfo> stateInfoList;
-	public List<CustData> mailingList;
-
-	/*************************  private variables  ************************************************/
+    /*************************  private variables  ************************************************/
+	private List<CustData> fileData;
+	private List<String> stateList;
+	private List<StateInfo> stateInfoList;
+	private List<CustData> mailingList;
 	private Scanner fileIn;
 
 	/*************************************  public methods ********************************************/
